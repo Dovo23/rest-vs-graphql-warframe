@@ -1,53 +1,53 @@
 # rest-vs-graphql-warframe
 
-Spring-Boot-Testanwendung zum Vergleich von REST und GraphQL anhand von Warframe-Fissure-Daten.
+Spring Boot test application for comparing REST and GraphQL using Warframe fissure data.
 
-## Projektziel
+## Project Goal
 
-Das Projekt untersucht, wie sich REST und GraphQL bei gleichen fachlichen Anforderungen auf Performance und Entwicklungsaufwand auswirken. Dafür stellt die Anwendung dieselben Daten über beide Schnittstellen bereit und ermöglicht einen direkten Vergleich im Frontend.
+This project explores how REST and GraphQL affect performance and development effort when used for the same application requirements. The application exposes the same data through both API styles and allows a direct comparison in the frontend.
 
-## Geplanter Funktionsumfang
+## Planned Features
 
-- Abruf aktueller Fissure-Daten aus der Warframe Worldstate API
-- REST-API für Listen-, Filter- und Detailansichten
-- GraphQL-API mit gleichwertigen Abfragen
-- Gemeinsame Service-Schicht für beide API-Varianten
-- Frontend mit Umschalter zwischen REST und GraphQL
-- Messung von Antwortzeit, Payload-Größe und Request-Anzahl
+- Fetch current fissure data from the Warframe Worldstate API
+- REST API for list, filter and detail views
+- GraphQL API with equivalent queries
+- Shared service layer for both API variants
+- Frontend with a switch between REST and GraphQL
+- Measurement of response time, payload size and request count
 
-## Technologiestack
+## Technology Stack
 
 - Java
 - Spring Boot
 - Spring Web
 - Spring for GraphQL
-- HTML, CSS und JavaScript
+- HTML, CSS and JavaScript
 
-## Lokale Ausführung
+## Local Setup
 
-Voraussetzungen:
+Requirements:
 
 - Java 21
 - Maven
 
-Tests ausführen:
+Run tests:
 
 ```bash
 mvn test
 ```
 
-Anwendung starten:
+Start the application:
 
 ```bash
 mvn spring-boot:run
 ```
 
-Health-Check:
+Health check:
 
 ```text
-GET http://localhost:8080/api/health
+GET http://localhost:8081/api/health
 ```
 
 ## Status
 
-Das Projekt befindet sich in der Initialisierungsphase.
+The project is currently in the initialization phase.
