@@ -48,6 +48,20 @@ Health check:
 GET http://localhost:8081/api/health
 ```
 
+## Configuration
+
+The application uses these configuration values:
+
+```properties
+server.port=8081
+warframe.api.base-url=https://api.warframestat.us/pc
+warframe.cache.ttl-seconds=60
+```
+
+- `server.port` defines the local application port.
+- `warframe.api.base-url` defines the Warframe API base URL used by the fissure client.
+- `warframe.cache.ttl-seconds` defines how long fetched fissure data is cached by the service layer.
+
 ## Status
 
-The project is currently in the initialization phase.
+The project currently contains the initial Spring Boot setup and the shared fissure data service.
