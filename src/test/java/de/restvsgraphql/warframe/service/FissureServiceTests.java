@@ -69,15 +69,75 @@ class FissureServiceTests {
         verify(client, times(1)).fetchFissures();
     }
 
+    @Test
+    void findFissuresFiltersByTierIgnoringCase() {
+        WarframeFissureClient client = mock(WarframeFissureClient.class);
+        Fissure lithFissure = fissure("fissure-1", "Lith", "Mobile Defense", "Grineer", "2026-06-08T11:00:00Z");
+        Fissure axiFissure = fissure("fissure-2", "Axi", "Extermination", "Corpus", "2026-06-08T11:00:00Z");
+        when(client.fetchFissures()).thenReturn(List.of(lithFissure, axiFissure));
+
+        FissureService service = new FissureService(client, 60, FIXED_CLOCK);
+
+        List<Fissure> result = service.findFissures(new FissureFilter("lith", null, null, false));
+
+        assertThat(result).containsExactly(lithFissure);
+    }
+
+    @Test
+    void findFissuresFiltersByMissionTypeIgnoringCase() {
+        WarframeFissureClient client = mock(WarframeFissureClient.class);
+        Fissure mobileDefenseFissure = fissure("fissure-1", "Lith", "Mobile Defense", "Grineer", "2026-06-08T11:00:00Z");
+        Fissure exterminationFissure = fissure("fissure-2", "Axi", "Extermination", "Corpus", "2026-06-08T11:00:00Z");
+        when(client.fetchFissures()).thenReturn(List.of(mobileDefenseFissure, exterminationFissure));
+
+        FissureService service = new FissureService(client, 60, FIXED_CLOCK);
+
+        List<Fissure> result = service.findFissures(new FissureFilter(null, "extermination", null, false));
+
+        assertThat(result).containsExactly(exterminationFissure);
+    }
+
+    @Test
+    void findFissuresFiltersByEnemyIgnoringCase() {
+        WarframeFissureClient client = mock(WarframeFissureClient.class);
+        Fissure grineerFissure = fissure("fissure-1", "Lith", "Mobile Defense", "Grineer", "2026-06-08T11:00:00Z");
+        Fissure corpusFissure = fissure("fissure-2", "Axi", "Extermination", "Corpus", "2026-06-08T11:00:00Z");
+        when(client.fetchFissures()).thenReturn(List.of(grineerFissure, corpusFissure));
+
+        FissureService service = new FissureService(client, 60, FIXED_CLOCK);
+
+        List<Fissure> result = service.findFissures(new FissureFilter(null, null, "corpus", false));
+
+        assertThat(result).containsExactly(corpusFissure);
+    }
+
+    @Test
+    void findFissuresFiltersExpiredFissuresWhenActiveOnlyIsEnabled() {
+        WarframeFissureClient client = mock(WarframeFissureClient.class);
+        Fissure activeFissure = fissure("fissure-1", "Lith", "Mobile Defense", "Grineer", "2026-06-08T11:00:00Z");
+        Fissure expiredFissure = fissure("fissure-2", "Axi", "Extermination", "Corpus", "2026-06-08T09:30:00Z");
+        when(client.fetchFissures()).thenReturn(List.of(activeFissure, expiredFissure));
+
+        FissureService service = new FissureService(client, 60, FIXED_CLOCK);
+
+        List<Fissure> result = service.findFissures(new FissureFilter(null, null, null, true));
+
+        assertThat(result).containsExactly(activeFissure);
+    }
+
     private Fissure fissure(String id) {
+        return fissure(id, "Lith", "Mobile Defense", "Grineer", "2026-06-08T11:00:00Z");
+    }
+
+    private Fissure fissure(String id, String tier, String missionType, String enemy, String expiry) {
         return new Fissure(
                 id,
                 Instant.parse("2026-06-08T09:00:00Z"),
-                Instant.parse("2026-06-08T11:00:00Z"),
+                Instant.parse(expiry),
                 "Eurasia (Earth)",
-                "Mobile Defense",
-                "Grineer",
-                "Lith",
+                missionType,
+                enemy,
+                tier,
                 1,
                 false,
                 false
