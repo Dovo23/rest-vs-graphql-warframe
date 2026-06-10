@@ -23,6 +23,31 @@ Das Projekt untersucht, wie sich REST und GraphQL bei gleichen fachlichen Anford
 - Spring for GraphQL
 - HTML, CSS und JavaScript
 
+## Lokale Ausführung
+
+Voraussetzungen:
+
+- Java 21
+- Maven
+
+Tests ausführen:
+
+```bash
+mvn test
+```
+
+Anwendung starten:
+
+```bash
+mvn spring-boot:run
+```
+
+Health-Check:
+
+```text
+GET http://localhost:8080/api/health
+```
+
 ## Status
 
-Das Projekt befindet sich in der Planungs- und Initialisierungsphase.
+Das Projekt befindet sich in der Initialisierungsphase.
