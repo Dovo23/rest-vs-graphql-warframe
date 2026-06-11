@@ -2,6 +2,7 @@ package de.restvsgraphql.warframe.api;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,36 @@ class FissureRestControllerTests {
                 .andExpect(status().isOk());
 
         verify(fissureService).findFissures(new FissureFilter("Lith", "Mobile Defense", "Grineer", true));
+    }
+
+    @Test
+    void findFissureByIdReturnsMatchingFissure() throws Exception {
+        when(fissureService.findById("fissure-1")).thenReturn(Optional.of(fissure()));
+
+        mockMvc.perform(get("/api/rest/fissures/fissure-1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("fissure-1"))
+                .andExpect(jsonPath("$.activation").value("2026-06-08T09:00:00Z"))
+                .andExpect(jsonPath("$.expiry").value("2026-06-08T11:00:00Z"))
+                .andExpect(jsonPath("$.node").value("Eurasia (Earth)"))
+                .andExpect(jsonPath("$.missionType").value("Mobile Defense"))
+                .andExpect(jsonPath("$.enemy").value("Grineer"))
+                .andExpect(jsonPath("$.tier").value("Lith"))
+                .andExpect(jsonPath("$.tierNum").value(1))
+                .andExpect(jsonPath("$.isStorm").value(false))
+                .andExpect(jsonPath("$.isHard").value(true));
+
+        verify(fissureService).findById("fissure-1");
+    }
+
+    @Test
+    void findFissureByIdReturnsNotFoundForUnknownId() throws Exception {
+        when(fissureService.findById("missing")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/rest/fissures/missing"))
+                .andExpect(status().isNotFound());
+
+        verify(fissureService).findById("missing");
     }
 
     private Fissure fissure() {

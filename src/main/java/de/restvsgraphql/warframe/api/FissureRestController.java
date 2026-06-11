@@ -2,7 +2,9 @@ package de.restvsgraphql.warframe.api;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +34,13 @@ public class FissureRestController {
         return fissureService.findFissures(filter).stream()
                 .map(RestFissureResponse::from)
                 .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RestFissureResponse> findFissureById(@PathVariable String id) {
+        return fissureService.findById(id)
+                .map(RestFissureResponse::from)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
