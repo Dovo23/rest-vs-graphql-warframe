@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestClientException;
 
 import de.restvsgraphql.warframe.domain.Fissure;
 import de.restvsgraphql.warframe.domain.FissureFilter;
@@ -90,6 +91,30 @@ class FissureRestControllerTests {
                 .andExpect(status().isNotFound());
 
         verify(fissureService).findById("missing");
+    }
+
+    @Test
+    void findFissuresReturnsServiceUnavailableWhenFissureDataCannotBeLoaded() throws Exception {
+        when(fissureService.findFissures(any(FissureFilter.class)))
+                .thenThrow(new RestClientException("Upstream unavailable"));
+
+        mockMvc.perform(get("/api/rest/fissures"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.status").value(503))
+                .andExpect(jsonPath("$.error").value("Service Unavailable"))
+                .andExpect(jsonPath("$.message").value("Fissure data is currently unavailable."));
+    }
+
+    @Test
+    void findFissureByIdReturnsServiceUnavailableWhenFissureDataCannotBeLoaded() throws Exception {
+        when(fissureService.findById("fissure-1"))
+                .thenThrow(new RestClientException("Upstream unavailable"));
+
+        mockMvc.perform(get("/api/rest/fissures/fissure-1"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.status").value(503))
+                .andExpect(jsonPath("$.error").value("Service Unavailable"))
+                .andExpect(jsonPath("$.message").value("Fissure data is currently unavailable."));
     }
 
     private Fissure fissure() {
