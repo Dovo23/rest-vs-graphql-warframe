@@ -1,0 +1,24 @@
+type Query {
+  fissures(filter: FissureFilterInput): [Fissure!]!
+  fissure(id: ID!): Fissure
+}
+
+type Fissure {
+  id: ID!
+  activation: String!
+  expiry: String!
+  node: String!
+  missionType: String!
+  enemy: String!
+  tier: String!
+  tierNum: Int
+  isStorm: Boolean!
+  isHard: Boolean!
+}
+
+input FissureFilterInput {
+  tier: String
+  missionType: String
+  enemy: String
+  activeOnly: Boolean = false
+}
