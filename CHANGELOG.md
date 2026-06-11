@@ -12,11 +12,14 @@
 - Warframe fissure client with external API mapping.
 - Cached fissure service with configurable TTL.
 - Fissure service tests for cache behavior, lookup and filtering.
+- REST response model for fissure data.
+- REST endpoints for fissure list and detail views.
+- REST query parameters for tier, mission type, enemy and active-only filtering.
+- REST error handling for unavailable upstream fissure data.
 
 ## Planned
 
 ### Added
-- REST API for fissure list and detail views.
 - GraphQL API with equivalent fissure queries.
 - Frontend with REST/GraphQL switch.
 - Measurement view for response time, payload size and request count.

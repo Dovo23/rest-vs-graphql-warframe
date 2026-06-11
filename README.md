@@ -48,6 +48,37 @@ Health check:
 GET http://localhost:8081/api/health
 ```
 
+## REST API
+
+List fissures:
+
+```text
+GET http://localhost:8081/api/rest/fissures
+```
+
+Optional query parameters:
+
+```text
+tier
+missionType
+enemy
+activeOnly
+```
+
+Example:
+
+```text
+GET http://localhost:8081/api/rest/fissures?tier=Lith&enemy=Grineer&activeOnly=true
+```
+
+Get one fissure by ID:
+
+```text
+GET http://localhost:8081/api/rest/fissures/{id}
+```
+
+If fissure data cannot be loaded from the upstream source, the REST API returns `503 Service Unavailable`.
+
 ## Configuration
 
 The application uses these configuration values:
@@ -64,4 +95,4 @@ warframe.cache.ttl-seconds=60
 
 ## Status
 
-The project currently contains the initial Spring Boot setup and the shared fissure data service.
+The project currently contains the initial Spring Boot setup, the shared fissure data service and the REST API.
