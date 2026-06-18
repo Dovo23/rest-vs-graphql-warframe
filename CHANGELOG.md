@@ -16,10 +16,12 @@
 - REST endpoints for fissure list and detail views.
 - REST query parameters for tier, mission type, enemy and active-only filtering.
 - REST error handling for unavailable upstream fissure data.
+- GraphQL schema for fissure list and detail queries.
+- GraphQL query controller for fissure data.
+- GraphQL tests for list, detail and filter behavior.
 
 ## Planned
 
 ### Added
-- GraphQL API with equivalent fissure queries.
 - Frontend with REST/GraphQL switch.
 - Measurement view for response time, payload size and request count.

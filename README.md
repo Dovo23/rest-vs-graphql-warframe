@@ -79,6 +79,61 @@ GET http://localhost:8081/api/rest/fissures/{id}
 
 If fissure data cannot be loaded from the upstream source, the REST API returns `503 Service Unavailable`.
 
+## GraphQL API
+
+GraphQL endpoint:
+
+```text
+POST http://localhost:8081/graphql
+```
+
+List fissures:
+
+```graphql
+query {
+  fissures {
+    id
+    node
+    missionType
+    enemy
+    tier
+    isStorm
+    isHard
+  }
+}
+```
+
+List fissures with filters:
+
+```graphql
+query {
+  fissures(filter: { tier: "Lith", enemy: "Grineer", activeOnly: true }) {
+    id
+    node
+    tier
+  }
+}
+```
+
+Get one fissure by ID:
+
+```graphql
+query {
+  fissure(id: "fissure-id") {
+    id
+    activation
+    expiry
+    node
+    missionType
+    enemy
+    tier
+    tierNum
+    isStorm
+    isHard
+  }
+}
+```
+
 ## Configuration
 
 The application uses these configuration values:
@@ -95,4 +150,4 @@ warframe.cache.ttl-seconds=60
 
 ## Status
 
-The project currently contains the initial Spring Boot setup, the shared fissure data service and the REST API.
+The project currently contains the initial Spring Boot setup, the shared fissure data service, the REST API and the GraphQL API.
